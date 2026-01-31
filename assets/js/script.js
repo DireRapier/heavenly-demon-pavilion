@@ -4,6 +4,7 @@ function initPavilion(jsonPath) {
         injectSearchOverlay();
         injectTributeModal();
         injectNewsletter(); // Inject Newsletter UI
+        initAtmosphere();
 
         fetchData(jsonPath)
             .then(data => {
@@ -640,4 +641,85 @@ function getTierClass(tierString) {
     if (tierString.includes('Heaven')) return 'tier-heaven';
     if (tierString.includes('Earth')) return 'tier-earth';
     return 'tier-mortal';
+}
+
+/* --- Sect Atmosphere (Particles) --- */
+function initAtmosphere() {
+    const canvas = document.getElementById('sect-atmosphere');
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
+    let width, height;
+    let particles = [];
+
+    // Configuration
+    const particleCount = 60;
+    const colors = ['rgba(138, 0, 0,', 'rgba(212, 175, 55,']; // Blood Red, Imperial Gold
+
+    function resize() {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+    }
+
+    class Petal {
+        constructor() {
+            this.reset(true);
+        }
+
+        reset(initial = false) {
+            this.x = Math.random() * width;
+            this.y = initial ? Math.random() * height : -10;
+            this.size = Math.random() * 3 + 2;
+            this.speedY = Math.random() * 1 + 0.5;
+            this.swayAmplitude = Math.random() * 20 + 10;
+            this.swayFrequency = Math.random() * 0.02 + 0.01;
+            this.time = Math.random() * 100;
+            this.rotation = Math.random() * Math.PI * 2;
+            this.rotationSpeed = (Math.random() - 0.5) * 0.02;
+
+            const colorBase = colors[Math.floor(Math.random() * colors.length)];
+            const opacity = Math.random() * 0.4 + 0.4;
+            this.color = colorBase + opacity + ')';
+        }
+
+        update() {
+            this.y += this.speedY;
+            this.time += this.swayFrequency;
+            this.x += Math.sin(this.time) * 0.5;
+            this.rotation += this.rotationSpeed;
+
+            if (this.y > height) {
+                this.reset();
+            }
+        }
+
+        draw() {
+            ctx.save();
+            ctx.translate(this.x, this.y);
+            ctx.rotate(this.rotation);
+            ctx.fillStyle = this.color;
+            ctx.beginPath();
+            ctx.ellipse(0, 0, this.size, this.size / 2, 0, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.restore();
+        }
+    }
+
+    function animate() {
+        ctx.clearRect(0, 0, width, height);
+        particles.forEach(p => {
+            p.update();
+            p.draw();
+        });
+        requestAnimationFrame(animate);
+    }
+
+    resize();
+    window.addEventListener('resize', resize);
+
+    for (let i = 0; i < particleCount; i++) {
+        particles.push(new Petal());
+    }
+
+    animate();
 }

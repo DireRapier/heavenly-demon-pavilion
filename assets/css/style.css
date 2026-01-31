@@ -30,6 +30,8 @@ body {
   overflow-x: hidden;
   position: relative;
   z-index: 0;
+  background-image: radial-gradient(circle at center, #1a1a1a 0%, #0a0a0a 100%);
+  background-attachment: fixed;
 }
 
 /* --- Layout --- */
@@ -54,7 +56,7 @@ body {
   width: calc(100% - var(--sidebar-width));
   padding: 3rem;
   min-height: 100vh;
-  background-image: radial-gradient(circle at center, #1a1a1a 0%, #0a0a0a 100%);
+  background: transparent;
   display: flex;
   flex-direction: column;
   position: relative;
