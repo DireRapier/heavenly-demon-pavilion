@@ -4,7 +4,8 @@
       "title": "The Art of the Void Pointer",
       "summary": "Mastering the null reference requires a heart still as water. One must embrace the nothingness to find the object within.",
       "date": "Year 4024, 3rd Moon",
-      "category": "Core Techniques"
+      "category": "Core Techniques",
+      "featured": true
     },
     {
       "title": "Refactoring the Nine Dragons",
@@ -30,25 +31,30 @@
       "name": "Heavenly Demon Array",
       "description": "A sorting algorithm that defies the heavens. It sorts the unsortable with O(1) complexity, utilizing the power of the Void.",
       "tier": "Heaven Rank",
-      "materials": ["Python", "C++", "Dark Qi"]
+      "materials": ["Python", "C++", "Dark Qi"],
+      "date": "Year 4024, 1st Moon",
+      "featured": true
     },
     {
       "name": "Jade Seal Authenticator",
       "description": "A secure login system protected by ancient runes. Ensures only the Patriarch and authorized Elders can access the treasury.",
       "tier": "Earth Rank",
-      "materials": ["JWT", "Node.js", "Express"]
+      "materials": ["JWT", "Node.js", "Express"],
+      "date": "Year 4024, 2nd Moon"
     },
     {
       "name": "Spirit Beast Tracker",
       "description": "A dashboard to monitor the vital signs of server daemons and background processes.",
       "tier": "Earth Rank",
-      "materials": ["React", "D3.js"]
+      "materials": ["React", "D3.js"],
+      "date": "Year 4024, 4th Moon"
     },
     {
       "name": "Mortal Calculator",
       "description": "A simple tool for the outer disciples to count copper coins. Useful for beginners learning the basics of arithmetic operators.",
       "tier": "Mortal Rank",
-      "materials": ["HTML", "Vanilla JS"]
+      "materials": ["HTML", "Vanilla JS"],
+      "date": "Year 4023, 12th Moon"
     }
   ]
 }

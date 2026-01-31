@@ -18,11 +18,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Data Fetching ---
-    // Only fetch if we have a container that needs data
+    // Check which containers exist
     const scriptureContainer = document.getElementById('scripture-container');
     const artifactContainer = document.getElementById('artifact-container');
+    const updatesContainer = document.getElementById('updates-container');
 
-    if (scriptureContainer || artifactContainer) {
+    if (scriptureContainer || artifactContainer || updatesContainer) {
         fetch('data.json')
             .then(response => {
                 if (!response.ok) {
@@ -37,14 +38,22 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (artifactContainer) {
                     renderArtifacts(data.artifacts, artifactContainer);
                 }
+                if (updatesContainer) {
+                    renderUpdates(data, updatesContainer);
+                }
             })
             .catch(error => {
                 console.error('Error:', error);
                 const errorMsg = document.createElement('p');
                 errorMsg.className = 'error-text';
                 errorMsg.textContent = 'The archives are currently sealed by a higher power (404).';
-                if (scriptureContainer) scriptureContainer.appendChild(errorMsg);
-                if (artifactContainer) artifactContainer.appendChild(errorMsg);
+
+                if (scriptureContainer) scriptureContainer.appendChild(errorMsg.cloneNode(true));
+                if (artifactContainer) artifactContainer.appendChild(errorMsg.cloneNode(true));
+                if (updatesContainer) {
+                    updatesContainer.innerHTML = '';
+                    updatesContainer.appendChild(errorMsg.cloneNode(true));
+                }
             });
     }
 
@@ -60,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function renderScriptures(scriptures, container) {
-    container.innerHTML = ''; // Clear loading text
+    container.innerHTML = '';
     scriptures.forEach(scroll => {
         const card = document.createElement('div');
         card.className = 'scroll-card';
@@ -84,7 +93,7 @@ function renderScriptures(scriptures, container) {
 }
 
 function renderArtifacts(artifacts, container) {
-    container.innerHTML = ''; // Clear loading text
+    container.innerHTML = '';
     artifacts.forEach(artifact => {
         const card = document.createElement('div');
         card.className = 'artifact-card';
@@ -122,6 +131,47 @@ function renderArtifacts(artifacts, container) {
         card.appendChild(header);
         card.appendChild(desc);
         card.appendChild(materialsDiv);
+
+        container.appendChild(card);
+    });
+}
+
+function renderUpdates(data, container) {
+    container.innerHTML = '';
+
+    // Logic: Find 1 featured/recent scripture and 1 featured/recent artifact
+    // If 'featured' is true, pick that. Otherwise pick first (most recent in top of list)
+
+    const featuredScripture = data.scriptures.find(s => s.featured) || data.scriptures[0];
+    const featuredArtifact = data.artifacts.find(a => a.featured) || data.artifacts[0];
+
+    const items = [
+        { type: 'Scripture', data: featuredScripture },
+        { type: 'Artifact', data: featuredArtifact }
+    ];
+
+    items.forEach(item => {
+        if (!item.data) return;
+
+        const card = document.createElement('div');
+        card.className = 'mini-card';
+
+        // Title
+        const title = document.createElement('h3');
+        title.textContent = item.data.title || item.data.name; // Handle scripture vs artifact naming
+
+        // Summary/Desc
+        const desc = document.createElement('p');
+        desc.textContent = item.data.summary || item.data.description;
+
+        // Meta (Type and Date)
+        const meta = document.createElement('div');
+        meta.className = 'meta';
+        meta.textContent = `${item.type} | ${item.data.date || 'Unknown Era'}`;
+
+        card.appendChild(title);
+        card.appendChild(desc);
+        card.appendChild(meta);
 
         container.appendChild(card);
     });
