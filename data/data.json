@@ -115,5 +115,49 @@
       "mediaSource": "assets/images/design_sketch.jpg",
       "desc": "Early concept art."
     }
+  ],
+  "cultivation": [
+    {
+      "id": "root_01",
+      "name": "The Foundation",
+      "desc": "The core of all digital arts. Understanding the machine is the first step to transcendence.",
+      "tier": 1,
+      "children": ["skill_html", "skill_linux"]
+    },
+    {
+      "id": "skill_html",
+      "name": "HTML Structure",
+      "desc": "The skeleton of the web. Without structure, there is only chaos.",
+      "tier": 2,
+      "children": ["skill_forms", "skill_semantics"]
+    },
+    {
+      "id": "skill_linux",
+      "name": "Debian Arts",
+      "desc": "Command of the underlying system. The true cultivator commands the shell.",
+      "tier": 2,
+      "children": ["skill_bash"]
+    },
+    {
+      "id": "skill_forms",
+      "name": "Forms & Inputs",
+      "desc": "The gateway for user interaction.",
+      "tier": 3,
+      "children": []
+    },
+    {
+      "id": "skill_semantics",
+      "name": "Semantic Markup",
+      "desc": "Speaking the language of the browser spirits (SEO).",
+      "tier": 3,
+      "children": []
+    },
+    {
+      "id": "skill_bash",
+      "name": "Bash Scripting",
+      "desc": "Automating the mundane to focus on the divine.",
+      "tier": 3,
+      "children": []
+    }
   ]
 }

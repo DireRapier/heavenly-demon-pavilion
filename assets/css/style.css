@@ -712,3 +712,148 @@ footer {
 .close-search:hover {
     color: var(--blood-red);
 }
+
+/* --- Cultivation Tree (Skill Tree) --- */
+#cultivation-container {
+    width: 100%;
+    overflow-x: auto; /* Allow horizontal scroll if tree is wide */
+    padding-bottom: 2rem;
+}
+
+#meridian-chart {
+    display: flex;
+    justify-content: center;
+    min-width: 600px;
+}
+
+/* Tree Structure */
+.tree ul {
+    padding-top: 20px;
+    position: relative;
+    transition: all 0.5s;
+    display: flex;
+    justify-content: center;
+    list-style: none;
+}
+
+.tree li {
+    float: left; text-align: center;
+    list-style-type: none;
+    position: relative;
+    padding: 20px 5px 0 5px;
+    transition: all 0.5s;
+}
+
+/* Connecting Lines */
+.tree li::before, .tree li::after {
+    content: '';
+    position: absolute; top: 0; right: 50%;
+    border-top: 2px solid var(--imperial-gold);
+    width: 50%; height: 20px;
+}
+
+.tree li::after {
+    right: auto; left: 50%;
+    border-left: 2px solid var(--imperial-gold);
+}
+
+/* Remove connectors from the single root */
+.tree li:only-child::after, .tree li:only-child::before {
+    display: none;
+}
+
+/* Remove connectors from first and last children */
+.tree li:first-child::before, .tree li:last-child::after {
+    border: 0 none;
+}
+
+/* Add vertical line back to the last child's connector */
+.tree li:last-child::before {
+    border-right: 2px solid var(--imperial-gold);
+    border-radius: 0 5px 0 0;
+}
+.tree li:first-child::after {
+    border-radius: 5px 0 0 0;
+}
+
+/* Downward connector from parent */
+.tree ul ul::before {
+    content: '';
+    position: absolute; top: 0; left: 50%;
+    border-left: 2px solid var(--imperial-gold);
+    width: 0; height: 20px;
+}
+
+/* The Node Itself */
+.tree a {
+    background-color: var(--blood-red);
+    color: var(--moonlight-white);
+    border: 2px solid var(--imperial-gold);
+    padding: 10px 15px;
+    text-decoration: none;
+    font-family: var(--font-header);
+    font-size: 0.9rem;
+    display: inline-block;
+    border-radius: 5px;
+    transition: all 0.3s;
+
+    /* Octagon Shape Approximation via clip-path? Or simple box for now as CSS shapes with borders are tricky */
+    /* Using box with bevelled look via simple transform or just border-radius */
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    cursor: pointer;
+    min-width: 120px;
+}
+
+.tree a:hover, .tree a.active {
+    background: var(--moonlight-white);
+    color: var(--blood-red);
+    box-shadow: 0 0 20px var(--imperial-gold);
+    border-color: var(--blood-red);
+}
+
+/* Technique Detail Panel */
+#technique-detail {
+    margin-top: 3rem;
+    border: 1px solid var(--imperial-gold);
+    background: #111;
+    padding: 2rem;
+    position: relative;
+    border-left: 5px solid var(--blood-red);
+    transition: opacity 0.5s ease;
+}
+
+#technique-detail.hidden {
+    display: none;
+    opacity: 0;
+}
+
+.detail-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid #333;
+    padding-bottom: 0.5rem;
+}
+
+#tech-name {
+    font-family: var(--font-header);
+    color: var(--imperial-gold);
+    font-size: 1.5rem;
+}
+
+#tech-projects {
+    margin-top: 1.5rem;
+}
+
+.related-project-link {
+    display: block;
+    margin-top: 0.5rem;
+    color: #ccc;
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.related-project-link:hover {
+    color: var(--imperial-gold);
+}

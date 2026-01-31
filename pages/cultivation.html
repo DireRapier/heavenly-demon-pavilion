@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Refactoring the Nine Dragons | Heavenly Demon</title>
+    <title>Cultivation Tree | Heavenly Demon</title>
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
     <link rel="stylesheet" href="../assets/css/style.css">
 </head>
@@ -38,13 +38,13 @@
                 </a>
             </li>
              <li class="nav-item">
-                <a href="../pages/records.html" class="nav-link">
+                <a href="records.html" class="nav-link">
                     <i class="ri-gallery-line"></i>
                     <span>Hall of Records</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a href="../pages/cultivation.html" class="nav-link">
+                <a href="cultivation.html" class="nav-link active">
                     <i class="ri-node-tree"></i>
                     <span>Cultivation Tree</span>
                 </a>
@@ -65,27 +65,28 @@
     </aside>
 
     <main id="main-content">
-        <article class="post-article">
-            <h2 class="page-title">Refactoring the Nine Dragons</h2>
-            <div class="meta post-meta">
-                <span>Year 4024, 5th Moon</span> | <span>Maintenance</span>
+        <h2 class="page-title">The Path of Cultivation</h2>
+        <p style="color: #ccc; margin-bottom: 2rem;">Explore the meridians of knowledge. Click a node to inspect the technique.</p>
+
+        <!-- The Skill Tree -->
+        <div id="cultivation-container">
+            <div id="meridian-chart">
+                <!-- Tree rendered by JS -->
             </div>
+        </div>
 
-            <p class="post-paragraph">
-                The legacy code of the Ancestors is a beast of nine heads. Cut one off, and two bugs take its place.
-                The key to taming the dragon is not strength, but decomposition.
-            </p>
-
-            <h3 class="post-heading">The Method of Separation</h3>
-            <p class="post-paragraph">
-                We apply the "Single Responsibility Principle" like a scalpel. Each function shall do one thing, and do it perfectly.
-                Only then can the flow of Qi (Data) move unimpeded through the meridians (Functions).
-            </p>
-
-            <div class="post-footer">
-                <a href="../library.html" class="btn-seal">Return to Library</a>
+        <!-- Hidden Detail Panel -->
+        <div id="technique-detail" class="hidden">
+            <div class="detail-header">
+                <h3 id="tech-name">Technique Name</h3>
+                <span id="tech-tier" class="tier-badge">Tier</span>
             </div>
-        </article>
+            <p id="tech-desc">Description of the skill...</p>
+            <div id="tech-projects">
+                <!-- Related projects populated here -->
+            </div>
+        </div>
+
     </main>
 
     <script src="../assets/js/script.js"></script>
