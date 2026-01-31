@@ -464,6 +464,7 @@ footer {
     border-right: 2px solid var(--imperial-gold); /* Gold border for "Hidden Scroll" look */
     box-shadow: 10px 0 30px rgba(0,0,0,0.8);
     transform: translateX(-110%); /* Fully hide */
+    overflow-y: auto;
   }
 
   #sidebar.active {
