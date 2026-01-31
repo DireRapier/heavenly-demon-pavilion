@@ -159,5 +159,9 @@
       "tier": 3,
       "children": []
     }
-  ]
+  ],
+  "tribute": {
+    "kofi": "https://ko-fi.com/patriarch_of_code",
+    "paypal": "https://paypal.me/sect_treasury"
+  }
 }

@@ -2,11 +2,13 @@ function initPavilion(jsonPath) {
     document.addEventListener('DOMContentLoaded', () => {
         setupMobileMenu();
         injectSearchOverlay();
+        injectTributeModal(); // Inject Tribute UI
 
         fetchData(jsonPath)
             .then(data => {
                 if (data) {
                     setupSearch(data, jsonPath);
+                    setupTribute(data); // Setup Tribute logic
                 }
             });
 
@@ -207,6 +209,75 @@ function performSearch(query, data, container, jsonPath) {
         });
     }
 }
+
+/* --- Tribute Altar (Donation) Functionality --- */
+
+function injectTributeModal() {
+    if (document.getElementById('tribute-modal')) return;
+
+    const modalHTML = `
+        <div id="tribute-modal">
+            <div class="tribute-container">
+                <i class="ri-close-line tribute-close" onclick="toggleTribute()"></i>
+                <div class="tribute-seal">
+                    <i class="ri-coin-line"></i>
+                </div>
+                <div class="tribute-content">
+                    <h2>Strengthen the Foundation</h2>
+                    <p>The maintenance of this Pavilion requires resources. If these techniques have aided your cultivation, consider offering a tribute to the Patriarch.</p>
+                    <div class="tribute-options">
+                        <a href="#" id="tribute-kofi" class="btn-tribute" target="_blank">
+                            <i class="ri-cup-line"></i> Offer a Cup of Jade Tea
+                        </a>
+                        <a href="#" id="tribute-paypal" class="btn-tribute" target="_blank">
+                            <i class="ri-coin-line"></i> Grant Spirit Stones
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
+
+    // Setup close on click outside
+    document.getElementById('tribute-modal').addEventListener('click', (e) => {
+        if (e.target.id === 'tribute-modal') {
+            toggleTribute();
+        }
+    });
+}
+
+function toggleTribute() {
+    const modal = document.getElementById('tribute-modal');
+    if (modal) {
+        modal.classList.toggle('active');
+    }
+}
+
+function setupTribute(data) {
+    if (!data.tribute) return;
+
+    const kofiBtn = document.getElementById('tribute-kofi');
+    const paypalBtn = document.getElementById('tribute-paypal');
+
+    if (kofiBtn && data.tribute.kofi) {
+        kofiBtn.href = data.tribute.kofi;
+    }
+
+    if (paypalBtn && data.tribute.paypal) {
+        paypalBtn.href = data.tribute.paypal;
+    }
+
+    // Bind triggers
+    const triggers = document.querySelectorAll('.tribute-trigger');
+    triggers.forEach(trigger => {
+        trigger.addEventListener('click', (e) => {
+            e.preventDefault();
+            toggleTribute();
+        });
+    });
+}
+
 
 /* --- Render Functions --- */
 
