@@ -87,9 +87,6 @@ function renderScriptures(scriptures, container) {
         const card = document.createElement('div');
         card.className = 'scroll-card';
 
-        // Make the whole card clickable if readLink exists, or add a specific button
-        // Requirement: "Read" button on scroll sets href to readLink
-
         const meta = document.createElement('div');
         meta.className = 'scroll-meta';
         meta.innerHTML = `<span>${scroll.date}</span><span>${scroll.category}</span>`;
@@ -102,12 +99,7 @@ function renderScriptures(scriptures, container) {
 
         const readBtn = document.createElement('a');
         readBtn.href = scroll.readLink;
-        readBtn.className = 'btn-seal';
-        readBtn.style.marginTop = '1rem';
-        readBtn.style.fontSize = '0.8rem';
-        readBtn.style.padding = '0.5rem 1rem';
-        readBtn.style.textDecoration = 'none';
-        readBtn.style.display = 'inline-block';
+        readBtn.className = 'btn-seal btn-read-more';
         readBtn.textContent = 'Read Scroll';
 
         card.appendChild(title);
@@ -125,18 +117,35 @@ function renderArtifacts(artifacts, container) {
         const card = document.createElement('div');
         card.className = 'artifact-card';
 
+        // Manual/Static resource distinction
+        if (artifact.downloadUrl) {
+            card.classList.add('border-silver');
+        }
+
         const header = document.createElement('div');
         header.className = 'artifact-header';
 
+        const titleContainer = document.createElement('div');
+        titleContainer.className = 'artifact-title-container';
+
         const title = document.createElement('h3');
         title.textContent = artifact.name;
+        titleContainer.appendChild(title);
+
+        // Visual Badge for File Type
+        if (artifact.fileType) {
+            const fileBadge = document.createElement('span');
+            fileBadge.className = 'file-type-badge';
+            fileBadge.textContent = `[${artifact.fileType}]`;
+            titleContainer.appendChild(fileBadge);
+        }
 
         const tier = document.createElement('span');
         const tierClass = getTierClass(artifact.tier);
         tier.className = `tier-badge ${tierClass}`;
         tier.textContent = artifact.tier;
 
-        header.appendChild(title);
+        header.appendChild(titleContainer);
         header.appendChild(tier);
 
         const desc = document.createElement('p');
@@ -144,16 +153,44 @@ function renderArtifacts(artifacts, container) {
 
         const materialsDiv = document.createElement('div');
         materialsDiv.className = 'materials';
-        artifact.materials.forEach(mat => {
-            const tag = document.createElement('span');
-            tag.className = 'material-tag';
-            tag.textContent = mat;
-            materialsDiv.appendChild(tag);
-        });
+        if (artifact.materials) {
+            artifact.materials.forEach(mat => {
+                const tag = document.createElement('span');
+                tag.className = 'material-tag';
+                tag.textContent = mat;
+                materialsDiv.appendChild(tag);
+            });
+        }
 
         card.appendChild(header);
         card.appendChild(desc);
         card.appendChild(materialsDiv);
+
+        // Actions: Download or Inspect (or both)
+        const actionContainer = document.createElement('div');
+        actionContainer.className = 'artifact-actions';
+
+        if (artifact.downloadUrl) {
+            const downloadBtn = document.createElement('a');
+            downloadBtn.href = artifact.downloadUrl;
+            downloadBtn.setAttribute('download', '');
+            downloadBtn.className = 'btn-download';
+            downloadBtn.innerHTML = '<i class="ri-download-cloud-2-line"></i> Claim Treasure';
+            actionContainer.appendChild(downloadBtn);
+        }
+
+        if (artifact.demoUrl && artifact.demoUrl !== '#') {
+             // Optional: Standard inspect button if it's also a web app
+             const inspectBtn = document.createElement('a');
+             inspectBtn.href = artifact.demoUrl;
+             inspectBtn.className = 'btn-download btn-inspect'; // Reuse style or make a gold one
+             inspectBtn.innerHTML = '<i class="ri-eye-line"></i> Inspect';
+             actionContainer.appendChild(inspectBtn);
+        }
+
+        if (actionContainer.hasChildNodes()) {
+            card.appendChild(actionContainer);
+        }
 
         container.appendChild(card);
     });
@@ -162,9 +199,6 @@ function renderArtifacts(artifacts, container) {
 function renderRecords(records, container, jsonPath) {
     container.innerHTML = '';
 
-    // Determine relative asset path prefix based on jsonPath
-    // if jsonPath is './data/data.json', we are at root, assets are at 'assets/'
-    // if jsonPath is '../data/data.json', we are in pages/, assets are at '../assets/'
     let assetPrefix = '';
     if (jsonPath.startsWith('../')) {
         assetPrefix = '../';
@@ -172,12 +206,11 @@ function renderRecords(records, container, jsonPath) {
 
     records.forEach(record => {
         const card = document.createElement('div');
-        card.className = 'artifact-card'; // Reuse style
+        card.className = 'artifact-card';
 
         const title = document.createElement('h3');
         title.textContent = record.title;
-        title.style.color = 'var(--imperial-gold)';
-        title.style.marginBottom = '1rem';
+        title.className = 'record-title';
 
         let mediaElement;
         const sourcePath = assetPrefix + record.mediaSource;
@@ -186,26 +219,22 @@ function renderRecords(records, container, jsonPath) {
             mediaElement = document.createElement('audio');
             mediaElement.controls = true;
             mediaElement.src = sourcePath;
-            mediaElement.style.width = '100%';
+            mediaElement.className = 'record-media';
         } else if (record.type === 'video') {
             mediaElement = document.createElement('video');
             mediaElement.controls = true;
             mediaElement.src = sourcePath;
-            mediaElement.style.width = '100%';
+            mediaElement.className = 'record-media';
         } else if (record.type === 'image') {
             mediaElement = document.createElement('img');
             mediaElement.src = sourcePath;
             mediaElement.alt = record.title;
-            mediaElement.style.width = '100%';
-            mediaElement.style.borderRadius = '4px';
-            mediaElement.style.border = '1px solid #333';
+            mediaElement.className = 'record-media record-image';
         }
 
         const desc = document.createElement('p');
         desc.textContent = record.desc;
-        desc.style.marginTop = '1rem';
-        desc.style.fontSize = '0.9rem';
-        desc.style.color = '#ccc';
+        desc.className = 'record-desc';
 
         card.appendChild(title);
         if (mediaElement) card.appendChild(mediaElement);

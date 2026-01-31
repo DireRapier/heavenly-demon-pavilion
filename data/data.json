@@ -37,35 +37,59 @@
   "artifacts": [
     {
       "id": "a_01",
-      "name": "Heavenly Demon Array",
-      "description": "A sorting algorithm that defies the heavens. It sorts the unsortable with O(1) complexity, utilizing the power of the Void.",
-      "tier": "Heaven Rank",
-      "materials": ["Python", "C++", "Dark Qi"],
+      "name": "The HTML App Template",
+      "description": "A clean foundation for static apps. No inline CSS allowed.",
+      "tier": "Earth Rank",
+      "materials": ["HTML", "CSS"],
+      "downloadUrl": "assets/downloads/template_v1.zip",
+      "fileType": "ZIP",
       "date": "Year 4024, 1st Moon",
       "featured": true
     },
     {
       "id": "a_02",
-      "name": "Jade Seal Authenticator",
-      "description": "A secure login system protected by ancient runes. Ensures only the Patriarch and authorized Elders can access the treasury.",
-      "tier": "Earth Rank",
-      "materials": ["JWT", "Node.js", "Express"],
+      "name": "Secret Python Manual",
+      "description": "The forbidden technique of FTP automation.",
+      "tier": "Heaven Rank",
+      "materials": ["Python", "PDF"],
+      "downloadUrl": "assets/downloads/python_manual.pdf",
+      "fileType": "PDF",
       "date": "Year 4024, 2nd Moon"
     },
     {
       "id": "a_03",
+      "name": "Heavenly Demon Array",
+      "description": "A sorting algorithm that defies the heavens. It sorts the unsortable with O(1) complexity.",
+      "tier": "Heaven Rank",
+      "materials": ["Python", "C++", "Dark Qi"],
+      "demoUrl": "#",
+      "date": "Year 4024, 1st Moon"
+    },
+    {
+      "id": "a_04",
+      "name": "Jade Seal Authenticator",
+      "description": "A secure login system protected by ancient runes. Ensures only the Patriarch and authorized Elders can access the treasury.",
+      "tier": "Earth Rank",
+      "materials": ["JWT", "Node.js", "Express"],
+      "demoUrl": "#",
+      "date": "Year 4024, 2nd Moon"
+    },
+    {
+      "id": "a_05",
       "name": "Spirit Beast Tracker",
       "description": "A dashboard to monitor the vital signs of server daemons and background processes.",
       "tier": "Earth Rank",
       "materials": ["React", "D3.js"],
+      "demoUrl": "#",
       "date": "Year 4024, 4th Moon"
     },
     {
-      "id": "a_04",
+      "id": "a_06",
       "name": "Mortal Calculator",
-      "description": "A simple tool for the outer disciples to count copper coins. Useful for beginners learning the basics of arithmetic operators.",
+      "description": "A simple tool for the outer disciples to count copper coins.",
       "tier": "Mortal Rank",
       "materials": ["HTML", "Vanilla JS"],
+      "demoUrl": "#",
       "date": "Year 4023, 12th Moon"
     }
   ],
