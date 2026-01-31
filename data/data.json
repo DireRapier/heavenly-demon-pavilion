@@ -1,33 +1,42 @@
 {
   "scriptures": [
     {
+      "id": "s_01",
       "title": "The Art of the Void Pointer",
       "summary": "Mastering the null reference requires a heart still as water. One must embrace the nothingness to find the object within.",
+      "readLink": "scriptures/post-01.html",
       "date": "Year 4024, 3rd Moon",
       "category": "Core Techniques",
       "featured": true
     },
     {
+      "id": "s_02",
       "title": "Refactoring the Nine Dragons",
       "summary": "Reducing complexity in the legacy codebase of the Ancestors. How to tame the spaghetti code beast without severing the flow of Qi.",
+      "readLink": "scriptures/post-02.html",
       "date": "Year 4024, 5th Moon",
       "category": "Maintenance"
     },
     {
+      "id": "s_03",
       "title": "Styles of the Hidden Sect",
       "summary": "Cascading Style Sheets are like the shifting winds. Learn to control the specificity hierarchy to dominate the DOM.",
+      "readLink": "scriptures/post-01.html",
       "date": "Year 4024, 7th Moon",
       "category": "Visual Arts"
     },
     {
+      "id": "s_04",
       "title": "Asynchronous Meditation",
       "summary": "Do not block the main thread. Let the Promise resolve in its own time, like a lotus blooming at dawn.",
+      "readLink": "scriptures/post-02.html",
       "date": "Year 4024, 8th Moon",
       "category": "Async Arts"
     }
   ],
   "artifacts": [
     {
+      "id": "a_01",
       "name": "Heavenly Demon Array",
       "description": "A sorting algorithm that defies the heavens. It sorts the unsortable with O(1) complexity, utilizing the power of the Void.",
       "tier": "Heaven Rank",
@@ -36,6 +45,7 @@
       "featured": true
     },
     {
+      "id": "a_02",
       "name": "Jade Seal Authenticator",
       "description": "A secure login system protected by ancient runes. Ensures only the Patriarch and authorized Elders can access the treasury.",
       "tier": "Earth Rank",
@@ -43,6 +53,7 @@
       "date": "Year 4024, 2nd Moon"
     },
     {
+      "id": "a_03",
       "name": "Spirit Beast Tracker",
       "description": "A dashboard to monitor the vital signs of server daemons and background processes.",
       "tier": "Earth Rank",
@@ -50,11 +61,35 @@
       "date": "Year 4024, 4th Moon"
     },
     {
+      "id": "a_04",
       "name": "Mortal Calculator",
       "description": "A simple tool for the outer disciples to count copper coins. Useful for beginners learning the basics of arithmetic operators.",
       "tier": "Mortal Rank",
       "materials": ["HTML", "Vanilla JS"],
       "date": "Year 4023, 12th Moon"
+    }
+  ],
+  "records": [
+    {
+      "id": "r_01",
+      "title": "Zither of the Void",
+      "type": "audio",
+      "mediaSource": "assets/audio/zither_theme.mp3",
+      "desc": "Ambient background noise for coding."
+    },
+    {
+      "id": "r_02",
+      "title": "Sword Dance Demo",
+      "type": "video",
+      "mediaSource": "assets/video/demo_reel.mp4",
+      "desc": "Showcase of CSS animations."
+    },
+    {
+      "id": "r_03",
+      "title": "Sect Blueprint",
+      "type": "image",
+      "mediaSource": "assets/images/design_sketch.jpg",
+      "desc": "Early concept art."
     }
   ]
 }
