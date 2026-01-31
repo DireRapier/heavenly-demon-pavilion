@@ -1,12 +1,12 @@
 function initPavilion(jsonPath) {
     document.addEventListener('DOMContentLoaded', () => {
         setupMobileMenu();
-        injectSearchOverlay(); // Inject UI first
+        injectSearchOverlay();
 
         fetchData(jsonPath)
             .then(data => {
                 if (data) {
-                    setupSearch(data, jsonPath); // Pass data and path to search logic
+                    setupSearch(data, jsonPath);
                 }
             });
 
@@ -49,8 +49,8 @@ function fetchData(jsonPath) {
     const artifactContainer = document.getElementById('artifact-container');
     const updatesContainer = document.getElementById('updates-container');
     const recordsContainer = document.getElementById('records-container');
+    const cultivationContainer = document.getElementById('meridian-chart');
 
-    // Always fetch data for Search, even if containers don't exist
     return fetch(jsonPath)
         .then(response => {
             if (!response.ok) {
@@ -59,19 +59,12 @@ function fetchData(jsonPath) {
             return response.json();
         })
         .then(data => {
-            if (scriptureContainer) {
-                renderScriptures(data.scriptures, scriptureContainer);
-            }
-            if (artifactContainer) {
-                renderArtifacts(data.artifacts, artifactContainer);
-            }
-            if (updatesContainer) {
-                renderUpdates(data, updatesContainer);
-            }
-            if (recordsContainer) {
-                renderRecords(data.records, recordsContainer, jsonPath);
-            }
-            return data; // Return data for chaining
+            if (scriptureContainer) renderScriptures(data.scriptures, scriptureContainer);
+            if (artifactContainer) renderArtifacts(data.artifacts, artifactContainer);
+            if (updatesContainer) renderUpdates(data, updatesContainer);
+            if (recordsContainer) renderRecords(data.records, recordsContainer, jsonPath);
+            if (cultivationContainer) renderCultivationTree(data, cultivationContainer, jsonPath);
+            return data;
         })
         .catch(error => {
             console.error('Error:', error);
@@ -82,6 +75,7 @@ function fetchData(jsonPath) {
             if (scriptureContainer) scriptureContainer.appendChild(errorMsg.cloneNode(true));
             if (artifactContainer) artifactContainer.appendChild(errorMsg.cloneNode(true));
             if (recordsContainer) recordsContainer.appendChild(errorMsg.cloneNode(true));
+            if (cultivationContainer) cultivationContainer.appendChild(errorMsg.cloneNode(true));
             if (updatesContainer) {
                 updatesContainer.innerHTML = '';
                 updatesContainer.appendChild(errorMsg.cloneNode(true));
@@ -119,11 +113,6 @@ function toggleSearch() {
 }
 
 function setupSearch(data, jsonPath) {
-    // 1. Hook up the Nav Trigger(s) - handled via event delegation or direct selection if possible
-    // Note: The HTML must have .search-trigger class on the LI or A
-
-    // We need to wait for DOM updates if we were injecting nav items, but we are editing HTML directly.
-    // However, the elements exist now.
     const searchTriggers = document.querySelectorAll('.search-trigger');
     searchTriggers.forEach(trigger => {
         trigger.addEventListener('click', (e) => {
@@ -132,7 +121,6 @@ function setupSearch(data, jsonPath) {
         });
     });
 
-    // 2. Input Logic
     const searchInput = document.getElementById('search-input');
     const resultsContainer = document.getElementById('search-results');
 
@@ -143,7 +131,6 @@ function setupSearch(data, jsonPath) {
                 resultsContainer.innerHTML = '';
                 return;
             }
-
             performSearch(query, data, resultsContainer, jsonPath);
         });
     }
@@ -153,35 +140,27 @@ function performSearch(query, data, container, jsonPath) {
     container.innerHTML = '';
     const results = [];
 
-    // Determine asset prefix based on jsonPath location
     let assetPrefix = '';
     if (jsonPath.startsWith('../')) {
         assetPrefix = '../';
     }
 
-    // Search Scriptures
     if (data.scriptures) {
         data.scriptures.forEach(item => {
             if (item.title.toLowerCase().includes(query) || item.summary.toLowerCase().includes(query)) {
                 results.push({
                     type: 'Scripture',
                     title: item.title,
-                    desc: item.summary, // optional to show
-                    link: item.readLink, // Assuming readLink is relative to where we are?
-                                         // If readLink is "scriptures/post.html", from root it works.
-                                         // From subfolder, we might need prefix.
-                                         // Usually readLink in JSON is relative to root.
+                    link: item.readLink,
                     class: 'result-scripture'
                 });
             }
         });
     }
 
-    // Search Artifacts
     if (data.artifacts) {
         data.artifacts.forEach(item => {
             if (item.name.toLowerCase().includes(query) || item.description.toLowerCase().includes(query)) {
-                // Determine link priority: Demo > Download > #
                 let link = '#';
                 if (item.demoUrl && item.demoUrl !== '#') link = item.demoUrl;
                 else if (item.downloadUrl) link = item.downloadUrl;
@@ -189,7 +168,6 @@ function performSearch(query, data, container, jsonPath) {
                 results.push({
                     type: 'Artifact',
                     title: item.name,
-                    desc: item.description,
                     link: link,
                     class: 'result-artifact'
                 });
@@ -197,15 +175,13 @@ function performSearch(query, data, container, jsonPath) {
         });
     }
 
-    // Search Records
     if (data.records) {
         data.records.forEach(item => {
             if (item.title.toLowerCase().includes(query) || item.desc.toLowerCase().includes(query)) {
                 results.push({
                     type: 'Record',
                     title: item.title,
-                    desc: item.desc,
-                    link: assetPrefix + item.mediaSource, // Raw asset link
+                    link: assetPrefix + item.mediaSource,
                     class: 'result-record'
                 });
             }
@@ -219,11 +195,6 @@ function performSearch(query, data, container, jsonPath) {
             const el = document.createElement('a');
             el.className = 'result-item';
             el.href = res.link;
-
-            // Adjust link if it's not absolute and we are in subfolder (except for records which we handled)
-            // Actually, if we are in 'scriptures/' and link is 'projects.html', we need '../projects.html'.
-            // The JSON links are likely "projects.html" or "scriptures/post-01.html".
-            // If we are deep, we need to prepend ../
 
             if (!res.link.startsWith('http') && !res.link.startsWith('#') && !res.link.startsWith('../') && assetPrefix) {
                el.href = assetPrefix + res.link;
@@ -275,7 +246,6 @@ function renderArtifacts(artifacts, container) {
         const card = document.createElement('div');
         card.className = 'artifact-card';
 
-        // Manual/Static resource distinction
         if (artifact.downloadUrl) {
             card.classList.add('border-silver');
         }
@@ -290,7 +260,6 @@ function renderArtifacts(artifacts, container) {
         title.textContent = artifact.name;
         titleContainer.appendChild(title);
 
-        // Visual Badge for File Type
         if (artifact.fileType) {
             const fileBadge = document.createElement('span');
             fileBadge.className = 'file-type-badge';
@@ -324,7 +293,6 @@ function renderArtifacts(artifacts, container) {
         card.appendChild(desc);
         card.appendChild(materialsDiv);
 
-        // Actions: Download or Inspect (or both)
         const actionContainer = document.createElement('div');
         actionContainer.className = 'artifact-actions';
 
@@ -338,10 +306,9 @@ function renderArtifacts(artifacts, container) {
         }
 
         if (artifact.demoUrl && artifact.demoUrl !== '#') {
-             // Optional: Standard inspect button if it's also a web app
              const inspectBtn = document.createElement('a');
              inspectBtn.href = artifact.demoUrl;
-             inspectBtn.className = 'btn-download btn-inspect'; // Reuse style or make a gold one
+             inspectBtn.className = 'btn-download btn-inspect';
              inspectBtn.innerHTML = '<i class="ri-eye-line"></i> Inspect';
              actionContainer.appendChild(inspectBtn);
         }
@@ -436,6 +403,114 @@ function renderUpdates(data, container) {
 
         container.appendChild(card);
     });
+}
+
+/* --- Cultivation Tree Render Logic --- */
+function renderCultivationTree(data, container, jsonPath) {
+    container.innerHTML = '';
+    const treeData = data.cultivation;
+    const artifacts = data.artifacts; // Capture artifacts
+    if (!treeData) return;
+
+    // Use a set or map to quickly find nodes by ID
+    const nodeMap = new Map(treeData.map(node => [node.id, node]));
+
+    // Find roots (tier 1 nodes)
+    const roots = treeData.filter(n => n.tier === 1);
+
+    // Create the tree container
+    const treeRootDiv = document.createElement('div');
+    treeRootDiv.className = 'tree';
+
+    const rootUl = document.createElement('ul');
+
+    roots.forEach(rootNode => {
+        const li = buildTreeBranch(rootNode, nodeMap, artifacts, jsonPath);
+        rootUl.appendChild(li);
+    });
+
+    treeRootDiv.appendChild(rootUl);
+    container.appendChild(treeRootDiv);
+}
+
+function buildTreeBranch(node, nodeMap, artifacts, jsonPath) {
+    const li = document.createElement('li');
+
+    const a = document.createElement('a');
+    a.href = '#';
+    a.textContent = node.name;
+    a.dataset.id = node.id;
+
+    a.addEventListener('click', (e) => {
+        e.preventDefault();
+        document.querySelectorAll('.tree a').forEach(el => el.classList.remove('active'));
+        a.classList.add('active');
+        showSkillDetails(node, artifacts, jsonPath);
+    });
+
+    li.appendChild(a);
+
+    if (node.children && node.children.length > 0) {
+        const childUl = document.createElement('ul');
+        node.children.forEach(childId => {
+            const childNode = nodeMap.get(childId);
+            if (childNode) {
+                childUl.appendChild(buildTreeBranch(childNode, nodeMap, artifacts, jsonPath));
+            }
+        });
+        if (childUl.hasChildNodes()) {
+            li.appendChild(childUl);
+        }
+    }
+
+    return li;
+}
+
+function showSkillDetails(skill, artifacts, jsonPath) {
+    const panel = document.getElementById('technique-detail');
+    const nameEl = document.getElementById('tech-name');
+    const tierEl = document.getElementById('tech-tier');
+    const descEl = document.getElementById('tech-desc');
+    const projectsEl = document.getElementById('tech-projects');
+
+    let assetPrefix = '';
+    if (jsonPath.startsWith('../')) {
+        assetPrefix = '../';
+    }
+
+    if (panel) {
+        nameEl.textContent = skill.name;
+        tierEl.textContent = `Tier ${skill.tier}`;
+        descEl.textContent = skill.desc;
+        projectsEl.innerHTML = '';
+
+        // Find related artifacts based on loose string matching in materials
+        const related = artifacts.filter(art => {
+            if (!art.materials) return false;
+            // Matches if any material includes the first word of the skill name (e.g. "HTML" in "HTML Structure")
+            const keyword = skill.name.split(' ')[0].toLowerCase();
+            return art.materials.some(mat => mat.toLowerCase().includes(keyword));
+        });
+
+        if (related.length > 0) {
+            const heading = document.createElement('h4');
+            heading.style.color = '#888';
+            heading.style.marginTop = '1rem';
+            heading.style.fontSize = '0.9rem';
+            heading.textContent = 'Technique Applied In:';
+            projectsEl.appendChild(heading);
+
+            related.forEach(art => {
+                const link = document.createElement('a');
+                link.href = assetPrefix + 'projects.html'; // Direct to projects page
+                link.className = 'related-project-link';
+                link.innerHTML = `<i class="ri-sword-line"></i> ${art.name}`;
+                projectsEl.appendChild(link);
+            });
+        }
+
+        panel.classList.remove('hidden');
+    }
 }
 
 function getTierClass(tierString) {
