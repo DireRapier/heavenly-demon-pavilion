@@ -2,13 +2,14 @@ function initPavilion(jsonPath) {
     document.addEventListener('DOMContentLoaded', () => {
         setupMobileMenu();
         injectSearchOverlay();
-        injectTributeModal(); // Inject Tribute UI
+        injectTributeModal();
+        injectNewsletter(); // Inject Newsletter UI
 
         fetchData(jsonPath)
             .then(data => {
                 if (data) {
                     setupSearch(data, jsonPath);
-                    setupTribute(data); // Setup Tribute logic
+                    setupTribute(data);
                 }
             });
 
@@ -276,6 +277,57 @@ function setupTribute(data) {
             toggleTribute();
         });
     });
+}
+
+/* --- Sect Decree (Newsletter) Functionality --- */
+
+function injectNewsletter() {
+    const footer = document.querySelector('footer');
+    if (!footer || document.getElementById('newsletter-section')) return;
+
+    const newsletterHTML = `
+        <section id="newsletter-section">
+            <div class="newsletter-content">
+                <h3>Receive the Patriarch's Edicts</h3>
+                <p>Join the inner circle. Receive forbidden techniques and sect updates directly to your spirit conduit.</p>
+                <form class="newsletter-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+                    <input type="email" name="email" class="newsletter-input" placeholder="Enter your spirit address (email)..." required>
+                    <button type="submit" class="btn-decree">
+                        <i class="ri-quill-pen-line"></i> Seal the Pact
+                    </button>
+                </form>
+            </div>
+        </section>
+    `;
+
+    // Inject at the beginning of the footer content
+    footer.insertAdjacentHTML('afterbegin', newsletterHTML);
+
+    // Setup form handling
+    const form = footer.querySelector('.newsletter-form');
+    if (form) {
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const btn = form.querySelector('button');
+            const originalText = btn.innerHTML;
+
+            // Loading State
+            btn.innerHTML = '<i class="ri-loader-4-line"></i> Sending Spirit Pigeon...';
+            btn.style.opacity = '0.7';
+
+            // Simulate API call
+            setTimeout(() => {
+                const contentDiv = footer.querySelector('.newsletter-content');
+                contentDiv.innerHTML = `
+                    <div class="newsletter-success">
+                        <h3><i class="ri-checkbox-circle-line"></i> The Pact is Sealed</h3>
+                        <p>You are now a disciple of the inner circle.</p>
+                    </div>
+                `;
+            }, 1500);
+        });
+    }
 }
 
 

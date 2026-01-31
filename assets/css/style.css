@@ -979,3 +979,89 @@ footer {
     transform: scale(1.2) rotate(15deg);
     color: var(--imperial-gold);
 }
+
+/* --- The Sect Decree (Newsletter) --- */
+#newsletter-section {
+    background: rgba(138, 0, 0, 0.1);
+    border: 1px solid var(--imperial-gold);
+    padding: 2rem;
+    margin-bottom: 3rem;
+    text-align: center;
+    width: 100%;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.newsletter-content h3 {
+    font-family: var(--font-header);
+    color: var(--imperial-gold);
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.newsletter-content p {
+    color: #ccc;
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+}
+
+.newsletter-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.newsletter-input {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--imperial-gold);
+    padding: 0.8rem;
+    color: var(--moonlight-white);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.newsletter-input:focus {
+    border-bottom: 2px solid var(--blood-red);
+    box-shadow: 0 1px 0 var(--blood-red);
+}
+
+.newsletter-input::placeholder {
+    color: #666;
+}
+
+.btn-decree {
+    background: var(--imperial-gold);
+    color: var(--void-black);
+    border: none;
+    padding: 0.8rem 1.5rem;
+    font-family: var(--font-header);
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.btn-decree:hover {
+    background: var(--blood-red);
+    color: var(--imperial-gold);
+    transform: scale(1.02);
+    box-shadow: 0 0 10px rgba(138, 0, 0, 0.5);
+}
+
+.newsletter-success {
+    color: var(--imperial-gold);
+    font-family: var(--font-header);
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
